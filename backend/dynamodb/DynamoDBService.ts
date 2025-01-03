@@ -121,10 +121,24 @@ export class DynamoDBService {
             },
         };
 
-        const result = await this.dynamoDb.scan(params).promise();
-        result.Items = result.Items?.sort((a, b) => (a.date < b.date ? 1 : -1));
+        let items: DynamoDB.DocumentClient.ItemList = [];
+        let lastEvaluatedKey: DynamoDB.DocumentClient.Key | undefined;
 
-        return result;
+        do {
+            const result: ScanOutput = await this.dynamoDb.scan({
+                ...params,
+                ExclusiveStartKey: lastEvaluatedKey,
+            }).promise();
+
+            if(result.Items) {
+                items = items.concat(result.Items);
+            }
+
+            lastEvaluatedKey = result.LastEvaluatedKey;
+        } while(lastEvaluatedKey);
+        items = items.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+        return { Items: items } as QueryOutput;
     }
 
     public async getPicks(date: string, type: string): Promise<QueryOutput> {
