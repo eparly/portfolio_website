@@ -43,9 +43,10 @@ const AddRecipePage: React.FC = () => {
       title,
       ingredients: ingredients.filter((ingredient) => ingredient.trim() !== ''), // Remove empty fields
       instructions: instructions.filter((instruction) => instruction.trim() !== ''), // Remove empty fields
-      createdBy: auth.user?.profile.name || 'Unknown', // Use the user's name or a default value
+      createdBy: auth.user?.profile.given_name || 'Unknown', // Use the user's name or a default value
       createdAt: new Date().toISOString(),
     };
+    console.log('Submitting recipe:', recipe);
 
     try {
       const response = await axios.post(
