@@ -58,6 +58,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <li><a href="/">Home</a></li>
             <li><a href="/nba">NBA</a></li>
             <li><a href="/hockey">Hockey Analytics</a></li>
+            <li><a href="/recipes">Recipes</a></li>
           </ul>
         </nav>
       </header>
