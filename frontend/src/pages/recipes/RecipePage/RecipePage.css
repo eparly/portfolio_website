@@ -11,6 +11,12 @@
     font-size: 2.5rem;
     color: #007bff;
     margin-bottom: 20px;
+    text-align: center;
+  }
+  .recipe-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
   }
   
   .recipe-page h2 {
@@ -27,4 +33,19 @@
   .recipe-page p {
     font-size: 1rem;
     color: #6c757d;
+  }
+  .recipe-image {
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  .recipe-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recipe-details {
+    flex: 2;
   }

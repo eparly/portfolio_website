@@ -20,29 +20,20 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
         };
     }
     const recipe: AddRecipeRequest = JSON.parse(event.body);
-    if (!recipe.title || !recipe.ingredients || !recipe.instructions) {
-        return {
-            statusCode: 400,
-            headers: corsHeaders,
-            body: JSON.stringify({ error: 'Bad Request, Missing Fields' }),
-        };
-    }
-    if (recipe.ingredients.length === 0 || recipe.instructions.length === 0) {
-        return {
-            statusCode: 400,
-            headers: corsHeaders,
-            body: JSON.stringify({ error: 'Bad Request, Empty Fields' }),
-        };
-    }
+
     const recipeId = uuidv4();
     console.log('recipeId', recipeId);
 
     try {
+        const presignedUrl = await controller.generatePresignedUrl(recipeId);
         const response = await controller.addRecipe(recipe, recipeId);
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify(response),
+            body: JSON.stringify({
+                ...response,
+                presignedUrl
+            }),
         };
     } catch (error) {
         return {

@@ -10,15 +10,18 @@ export enum Tags {
 
 export type AddRecipeRequest = {
     title: string;
-    ingredients: string[];
-    instructions: string[];
+    description?: string;
+    ingredients?: string[];
+    instructions?: string[];
     createdBy: string;
     createdAt: string;
     tags?: Tags[];
+    link?: string;
 }
 
 export type AddRecipeResponse = {
     recipeId: string;
     recipe: AddRecipeRequest;
     message: string;
+    presignedUrl?: string;
 }

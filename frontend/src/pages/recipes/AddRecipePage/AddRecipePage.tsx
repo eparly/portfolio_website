@@ -8,8 +8,11 @@ const AddRecipePage: React.FC = () => {
   const auth = useAuth();
   console.log('auth:', auth);
   const [title, setTitle] = useState('');
+  const [link, setLink] = useState('');
+  const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState<string[]>(['']);
   const [instructions, setInstructions] = useState<string[]>(['']);
+  const [image, setImage] = useState<File | null>(null);
   const [message, setMessage] = useState('');
 
   const handleIngredientChange = (index: number, value: string) => {
@@ -36,11 +39,19 @@ const AddRecipePage: React.FC = () => {
     setInstructions(updatedInstructions);
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const recipe = {
       title,
+      description,
+      link,
       ingredients: ingredients.filter((ingredient) => ingredient.trim() !== ''), // Remove empty fields
       instructions: instructions.filter((instruction) => instruction.trim() !== ''), // Remove empty fields
       createdBy: auth.user?.profile.given_name || 'Unknown', // Use the user's name or a default value
@@ -58,10 +69,35 @@ const AddRecipePage: React.FC = () => {
           },
         }
       );
+
+      const { presignedUrl, recipeId } = response.data;
+
+      if (image && presignedUrl) {
+        try {
+          await axios.put(presignedUrl, image, {
+            headers: {
+              'Content-Type': image.type,
+            },
+          });
+        }
+        catch (imageUploadError) {
+          console.error('Error uploading image:', imageUploadError);
+          await axios.delete(
+            `https://7aqtiptcgl.execute-api.ca-central-1.amazonaws.com/prod/recipes/${recipeId}`
+          );
+          setMessage('Failed to upload image. Please try again.');
+          throw new Error('Image upload failed. Recipe creation rolled back.');
+        }
+
+        console.log('Image uploaded successfully');
+      }
       setMessage('Recipe added successfully!');
       setTitle('');
       setIngredients(['']);
       setInstructions(['']);
+      setDescription('');
+      setLink('');
+      setImage(null);
     } catch (error) {
       console.error('Error adding recipe:', error);
       setMessage('Failed to add recipe. Please try again.');
@@ -81,6 +117,23 @@ const AddRecipePage: React.FC = () => {
             required
           />
         </label>
+        <label>
+          Link:
+          <input
+            type="url"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            placeholder="https://example.com/recipe"
+          />
+        </label>
+
+        <label>
+          Description:
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
 
         <label>Ingredients:</label>
         {ingredients.map((ingredient, index) => (
@@ -90,7 +143,6 @@ const AddRecipePage: React.FC = () => {
               value={ingredient}
               onChange={(e) => handleIngredientChange(index, e.target.value)}
               placeholder={`Ingredient ${index + 1}`}
-              required
             />
             <button
               type="button"
@@ -113,7 +165,6 @@ const AddRecipePage: React.FC = () => {
               value={instruction}
               onChange={(e) => handleInstructionChange(index, e.target.value)}
               placeholder={`Step ${index + 1}`}
-              required
             />
             <button
               type="button"
@@ -127,6 +178,11 @@ const AddRecipePage: React.FC = () => {
         <button type="button" onClick={addInstructionField}>
           Add Step
         </button>
+
+        <label>
+          Upload Image:
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+        </label>
 
         <button type="submit">Submit Recipe</button>
       </form>

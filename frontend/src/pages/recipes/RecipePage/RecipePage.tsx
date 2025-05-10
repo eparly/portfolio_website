@@ -43,23 +43,41 @@ const RecipePage: React.FC = () => {
   return (
     <div className="recipe-page">
       <h1>{recipe.title}</h1>
-      <p>Created By: {recipe.createdBy}</p>
-      <p>Created At: {new Date(recipe.createdAt).toLocaleDateString()}</p>
-      <h2>Ingredients</h2>
-      <ul>
-        {recipe.ingredients.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-      <h2>Instructions</h2>
-      <p>
-        {recipe.instructions.map((instruction, index) => (
-          <span key={index}>
-            {instruction}
-            {index < recipe.instructions.length - 1 && <br />}
-          </span>
-        ))}
-      </p>
+      <div className="recipe-content">
+        <div className="recipe-details">
+            <p>Created By: {recipe.createdBy}</p>
+            <p>Created At: {new Date(recipe.createdAt).toLocaleDateString()}</p>
+            {recipe.link && (
+              <p>
+                <a href={recipe.link} target="_blank" rel="noopener noreferrer">
+                  View Recipe Link
+                </a>
+              </p>
+            )}
+            <h2>Description</h2>
+            <p>{recipe.description}</p>
+            <h2>Ingredients</h2>
+            <ul>
+              {recipe.ingredients?.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+            <h2>Instructions</h2>
+            <p>
+              {recipe.instructions?.map((instruction, index) => (
+                <span key={index}>
+                  {instruction}
+                  {index < recipe.instructions!.length - 1 && <br />}
+                </span>
+              ))}
+            </p>
+        </div>
+        {recipe.presignedUrl && (
+          <div className="recipe-image">
+            <img src={recipe.presignedUrl} alt={`${recipe.title} image`} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

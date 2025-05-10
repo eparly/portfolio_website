@@ -94,5 +94,28 @@
   }
   
   .recipe-form button[type="button"]:hover {
-    background-color: #005b05;
+    background-color: #004a04;
   }
+
+  .recipe-form input[type="file"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.recipe-form input[type="file"]::-webkit-file-upload-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #fff;
+    background-color: #005b05;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.recipe-form input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #004a04;
+}

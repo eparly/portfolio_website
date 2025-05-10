@@ -5,10 +5,13 @@ import './RecipeCard.css';
 export interface Recipe {
     recipeId: number;
     title: string;
-    ingredients: string[];
-    instructions: string[];
+    description?: string;
+    ingredients?: string[];
+    instructions?: string[];
     createdBy: string;
     createdAt: string;
+    link?: string;
+    presignedUrl?: string;
 }
 
 interface RecipeCardProps {
