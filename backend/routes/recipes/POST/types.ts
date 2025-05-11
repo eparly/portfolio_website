@@ -1,11 +1,16 @@
 export enum Tags {
-    BREAKFAST = "Breakfast",
-    LUNCH = "Lunch",
-    DINNER = "Dinner",
-    SNACK = "Snack",
-    DESSERT = "Dessert",
-    APPETIZER = "Appetizer",
-    BEVERAGE = "Beverage",
+    MEAT = "Meat",
+    VEGGIES = "Veggies",
+    APPITIZERS = "Appitizers",
+    PASTA = "Pasta",
+    SOUP_SALAD = "Soup and Salad",
+    CASSEROLES = "Casseroles",
+    DESSERTS = "Desserts",
+    BEVERAGES = "Beverages",
+    POTATOES_RICE = "Potatoes and Rice",
+    SAUCES_GRAVIES_RUBS = "Sauces, Gravies, and Rubs",
+    CANNING_PRESERVING = "Canning",
+    BREADS = "Breads",
 }
 
 export type AddRecipeRequest = {

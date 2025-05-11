@@ -4,5 +4,6 @@ export type GetRecipesResponse = {
         title: string;
         ingredients: string[];
         instructions: string[];
+        tags?: string[];
     }[];
 }

@@ -2,6 +2,26 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddRecipePage.css';
 import { useAuth } from 'react-oidc-context';
+import { Tags } from '../../../components/RecipeCard/RecipeCard';
+
+const availableTags: Tags[] = [
+        Tags.BEEF,
+        Tags.CHICKEN,
+        Tags.PORK,
+        Tags.SEAFOOD,
+        Tags.VEGGIES,
+        Tags.APPITIZERS,
+        Tags.PASTA,
+        Tags.SOUP_SALAD,
+        Tags.CASSEROLES,
+        Tags.DESSERTS,
+        Tags.BEVERAGES,
+        Tags.POTATOES_RICE,
+        Tags.SAUCES_GRAVIES_RUBS,
+        Tags.CANNING_PRESERVING,
+        Tags.BREADS,
+    ];
+
 
 
 const AddRecipePage: React.FC = () => {
@@ -13,8 +33,10 @@ const AddRecipePage: React.FC = () => {
   const [ingredients, setIngredients] = useState<string[]>(['']);
   const [instructions, setInstructions] = useState<string[]>(['']);
   const [image, setImage] = useState<File | null>(null);
+  const [tags, setTags] = useState<Tags[]>([]); // State for selected tags
   const [message, setMessage] = useState('');
-
+  console.log('tags:', tags);
+  console.log('availableTags:', availableTags);
   const handleIngredientChange = (index: number, value: string) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients[index] = value;
@@ -45,6 +67,14 @@ const AddRecipePage: React.FC = () => {
     }
   };
 
+  const handleTagClick = (tag: Tags) => {
+    setTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag) // Remove tag if already selected
+        : [...prevTags, tag] // Add tag if not selected
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,6 +84,7 @@ const AddRecipePage: React.FC = () => {
       link,
       ingredients: ingredients.filter((ingredient) => ingredient.trim() !== ''), // Remove empty fields
       instructions: instructions.filter((instruction) => instruction.trim() !== ''), // Remove empty fields
+      tags,
       createdBy: auth.user?.profile.given_name || 'Unknown', // Use the user's name or a default value
       createdAt: new Date().toISOString(),
     };
@@ -98,6 +129,7 @@ const AddRecipePage: React.FC = () => {
       setDescription('');
       setLink('');
       setImage(null);
+      setTags([]);
     } catch (error) {
       console.error('Error adding recipe:', error);
       setMessage('Failed to add recipe. Please try again.');
@@ -178,6 +210,21 @@ const AddRecipePage: React.FC = () => {
         <button type="button" onClick={addInstructionField}>
           Add Step
         </button>
+        <label>Tags:</label>
+        <div className="tag-filter">
+          {availableTags.map((tag) => (
+            console.log('tag:', tag),
+            console.log('tags:', tags),
+            <button
+              key={tag}
+              type="button"
+              className={`tag-button ${tags.includes(tag) ? 'selected' : ''}`}
+              onClick={() => handleTagClick(tag)}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
 
         <label>
           Upload Image:

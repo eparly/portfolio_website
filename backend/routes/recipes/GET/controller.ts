@@ -22,6 +22,7 @@ export class GetRecipesController {
                 title: item.title,
                 ingredients: item.ingredients,
                 instructions: item.instructions,
+                tags: item.tags,
             };
         }
         );

@@ -2,6 +2,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './RecipeCard.css';
 
+export enum Tags{
+    CHICKEN = "Chicken",
+    BEEF = "Beef",
+    PORK = "Pork",
+    SEAFOOD = "Seafood",
+    VEGGIES = "Veggies",
+    APPITIZERS = "Appitizers",
+    PASTA = "Pasta",
+    SOUP_SALAD = "Soup and Salad",
+    CASSEROLES = "Casseroles",
+    DESSERTS = "Desserts",
+    BEVERAGES = "Beverages",
+    POTATOES_RICE = "Potatoes and Rice",
+    SAUCES_GRAVIES_RUBS = "Sauces, Gravies, and Rubs",
+    CANNING_PRESERVING = "Canning",
+    BREADS = "Breads",
+}
+
 export interface Recipe {
     recipeId: number;
     title: string;
@@ -11,6 +29,7 @@ export interface Recipe {
     createdBy: string;
     createdAt: string;
     link?: string;
+    tags?: Tags[];
     presignedUrl?: string;
 }
 

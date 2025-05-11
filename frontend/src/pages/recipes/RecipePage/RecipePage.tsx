@@ -71,7 +71,17 @@ const RecipePage: React.FC = () => {
                 </span>
               ))}
             </p>
+          <h3>Tags</h3>
+          <ul className="tags-list">
+            {recipe.tags?.map((tag, index) => (
+              <li key={index} className="tag-item">
+                {tag}
+              </li>
+            ))}
+          </ul>
         </div>
+
+        {/* todo: add hasImage to db entry to not display default picture if not included */}
         {recipe.presignedUrl && (
           <div className="recipe-image">
             <img src={recipe.presignedUrl} alt={`${recipe.title} image`} />

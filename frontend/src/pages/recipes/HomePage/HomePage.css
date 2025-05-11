@@ -95,3 +95,30 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.tag-button {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: #005b05;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tag-button.selected {
+  background-color: #00a806;
+}
+
+.tag-button:hover {
+  background-color: #00a806;
+}
