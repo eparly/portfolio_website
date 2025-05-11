@@ -119,21 +119,22 @@
 .recipe-form input[type="file"]::-webkit-file-upload-button:hover {
     background-color: #004a04;
 }
-.tag-button {
+.tag-filter .tag-button {
   padding: 8px 12px;
   font-size: 0.9rem;
   color: #fff;
-  /* background-color: #007bff; */
+  background-color: #6c757d;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.tag-button.selected {
+.tag-filter .tag-button.selected {
   background-color: #00a806;
 }
 
-.tag-button:hover {
+.tag-filter .tag-button:hover {
   background-color: #00a806;
 }
+

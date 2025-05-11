@@ -8,7 +8,7 @@ export enum Tags{
     PORK = "Pork",
     SEAFOOD = "Seafood",
     VEGGIES = "Veggies",
-    APPITIZERS = "Appitizers",
+    APPETIZERS = "Appetizers",
     PASTA = "Pasta",
     SOUP_SALAD = "Soup and Salad",
     CASSEROLES = "Casseroles",

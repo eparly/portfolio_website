@@ -10,7 +10,7 @@ const availableTags: Tags[] = [
         Tags.PORK,
         Tags.SEAFOOD,
         Tags.VEGGIES,
-        Tags.APPITIZERS,
+        Tags.APPETIZERS,
         Tags.PASTA,
         Tags.SOUP_SALAD,
         Tags.CASSEROLES,
