@@ -24,8 +24,9 @@
   },
   "dependencies": {
     "@aws-cdk/aws-lambda-nodejs": "^1.203.0",
-    "aws-cdk-lib": "^2.80.0",
+    "aws-cdk-lib": "^2.191.0",
     "aws-sdk": "^2.1692.0",
-    "constructs": "^10.1.0"
+    "constructs": "^10.1.0",
+    "uuid": "^11.1.0"
   }
 }
