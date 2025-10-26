@@ -25,6 +25,13 @@ type ChartProps = {
 }
 
 const UnitsChart: React.FC<ChartProps> = ({ data }) => {
+    if (!data || !Array.isArray(data.preds) || !Array.isArray(data.picks)) {
+        console.error("Invalid data structure passed to UnitsChart", data);
+        return <div>Error: Invalid data structure</div>;
+    }
+    if (data.preds.length === 0 || data.picks.length === 0) {
+        return <div>No data available</div>;
+    }
     const sortedPreds = [...data.preds].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const sortedPicks = [...data.picks].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const chartData = sortedPreds.map((pred, index) => ({

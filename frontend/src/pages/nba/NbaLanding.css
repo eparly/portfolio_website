@@ -171,3 +171,28 @@ strong {
   margin: 10px 0;
   color: #666;
 }
+
+.season-selector {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the selector */
+  gap: 10px;
+}
+
+.season-selector label {
+  display: none; /* Hide the label to prevent alignment issues */
+}
+
+.season-selector select {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.season-selector select:focus {
+  border-color: #007bff;
+}

@@ -9,6 +9,8 @@ import HomePage from './pages/recipes/HomePage/HomePage';
 import RecipePage from './pages/recipes/RecipePage/RecipePage';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import AddRecipePage from './pages/recipes/AddRecipePage/AddRecipePage';
+import NBAPicksPage from "./pages/nba/picks/NBAPicksPage";
+import EVPicksPage from "./pages/nba/picks/EVPicksPage";
 
 function App() {
 
@@ -29,6 +31,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/nba/*" element={<NBAPages />} />
+          <Route path="/nba/picks" element={<NBAPicksPage />} />
+          <Route path="/nba/ev-picks" element={<EVPicksPage />} />
           <Route path="/hockey" element={<HockeyAnalyticsPage />} />
           <Route path="/recipes" element={<HomePage />} />
           <Route path="/recipe/:id" element={<RecipePage />} />

@@ -1,3 +1,5 @@
+import { String } from "aws-sdk/clients/appstream";
+
 export type DynamoDBRecords = {
     date: string;
     'type-gameId': string;
@@ -6,12 +8,14 @@ export type DynamoDBRecords = {
         percentage: string;
         total: number;
         units: string;
+        bankroll?: string;
     };
     today: {
         correct: number;
         percentage: string;
         total: number;
         units: string;
+        bankroll_change?: string;
     }
 }
 
@@ -34,10 +38,12 @@ export type SingleRecordResponse = {
 export type RecordsResponse = {
     preds?: SingleRecordResponse[];
     picks?: SingleRecordResponse[];
+    evPicks?: SingleRecordResponse[];
 }
 
 export enum RecordType {
     preds = 'preds',
     value = 'value',
+    ev = 'ev',
     all = 'all'
 }

@@ -7,10 +7,12 @@ interface PickData {
     gameId: number;
     hometeam: string;
     awayTeam: string;
+    awayteam: string;
     actualOdds: number;
     impliedOdds: number;
     edge: number;
     pick: string;
+    bet_size?: number; // Added optional bet_size for EV Picks
 }
 
 interface PickCardProps {
@@ -18,10 +20,11 @@ interface PickCardProps {
 }
 
 const PickCard: React.FC<PickCardProps> = ({ pickData }) => {
-    const { hometeam, awayTeam, actualOdds, pick } = pickData;
-
+    const { hometeam, awayTeam, awayteam, actualOdds, pick, bet_size } = pickData;
+    let awayTeamName = awayTeam? awayTeam : awayteam;
     const homeColour = teamColours[hometeam] || '#ccc';
-    const awayColour = teamColours[awayTeam] || '#ccc';
+    const awayColour = teamColours[awayTeamName] || '#ccc';
+
 
     return (
         <div className="pick-card">
@@ -31,7 +34,7 @@ const PickCard: React.FC<PickCardProps> = ({ pickData }) => {
                 </div>
                 <div className='vs'>vs</div>
                 <div className="team" style={{ backgroundColor: awayColour }}>
-                    <span>{awayTeam}</span>
+                    <span>{awayTeamName}</span>
                 </div>
             </div>
             <div className="pick-details">
@@ -41,6 +44,11 @@ const PickCard: React.FC<PickCardProps> = ({ pickData }) => {
                 <p>
                     <strong>Odds: {actualOdds.toFixed(2)}</strong>
                 </p>
+                {bet_size && (
+                    <p>
+                        <strong>Bet Size: {bet_size.toFixed(2)}</strong>
+                    </p>
+                )}
             </div>
         </div>
     );

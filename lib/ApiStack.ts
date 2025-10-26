@@ -26,7 +26,8 @@ export class ApiStack extends Stack {
             entry: 'backend/routes/predictions/{date}/handler.ts',
             environment: {
                 TABLE_NAME: tableName
-            }
+            },
+            timeout: cdk.Duration.seconds(10)
         })
 
         const resultsLambda = new NodejsFunction(this, 'GetResultsRoute', {
@@ -35,7 +36,8 @@ export class ApiStack extends Stack {
             entry: 'backend/routes/results/{date}/handler.ts',
             environment: {
                 TABLE_NAME: tableName
-            }
+            },
+            timeout: cdk.Duration.seconds(10)
         })
 
         const recordLambda = new NodejsFunction(this, 'GetRecordRoute', {
@@ -44,7 +46,8 @@ export class ApiStack extends Stack {
             entry: 'backend/routes/record/handler.ts',
             environment: {
                 TABLE_NAME: tableName
-            }
+            },
+            timeout: cdk.Duration.seconds(10)
         })
 
         const picksLambda = new NodejsFunction(this, 'GetValuePicksRoute', {
@@ -53,7 +56,18 @@ export class ApiStack extends Stack {
             entry: 'backend/routes/picks/value/{date}/handler.ts',
             environment: {
                 TABLE_NAME: tableName
-            }
+            },
+            timeout: cdk.Duration.seconds(10)
+        })
+
+        const evPicksLambda = new NodejsFunction(this, 'GetEVPicksRoute', {
+            runtime: Runtime.NODEJS_20_X,
+            handler: 'handler',
+            entry: 'backend/routes/picks/ev/{date}/handler.ts',
+            environment: {
+                TABLE_NAME: tableName
+            },
+            timeout: cdk.Duration.seconds(10)
         })
 
         const api = new RestApi(this, 'nbaApi', {
@@ -64,11 +78,17 @@ export class ApiStack extends Stack {
         api.root.addResource('predictions').addResource('{date}').addMethod('GET', new LambdaIntegration(predictorLambda))
         api.root.addResource('results').addResource('{date}').addMethod('GET', new LambdaIntegration(resultsLambda))
         api.root.addResource('record').addMethod('GET', new LambdaIntegration(recordLambda))
-        api.root.addResource('picks').addResource('value').addResource('{date}').addMethod('GET', new LambdaIntegration(picksLambda))
+        
+        const picksResource = api.root.addResource('picks');
+
+        picksResource.addResource('value').addResource('{date}').addMethod('GET', new LambdaIntegration(picksLambda));
+        picksResource.addResource('ev').addResource('{date}').addMethod('GET', new LambdaIntegration(evPicksLambda));
+
         table.grantReadData(predictorLambda)
         table.grantReadData(resultsLambda)
         table.grantReadData(recordLambda)
         table.grantReadData(picksLambda)
+        table.grantReadData(evPicksLambda)
     }
 
 }

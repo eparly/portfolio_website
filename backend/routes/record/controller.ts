@@ -12,6 +12,7 @@ export class RecordController {
         try {
             let predRecords: SingleRecordResponse[] = []
             let picksRecords: SingleRecordResponse[] = []
+            let evPicksRecords: SingleRecordResponse[] = []
             if (queryType && !Object.values(RecordType).includes(queryType)) {
                 throw new Error('Invalid query type')
             }
@@ -59,6 +60,29 @@ export class RecordController {
                 })
             }
 
+            if (queryType === RecordType.ev || queryType === RecordType.all) {
+                const dbEVPicksRecords = await this.dynamoDbService.getAllPicksRecord(RecordType.ev)
+                evPicksRecords = (dbEVPicksRecords.Items as DynamoDBRecords[] || []).map((item) => {
+                    return {
+                        date: item.date,
+                        allTime: {
+                            correct: item.allTime.correct,
+                            percentage: Number(item.allTime.percentage),
+                            total: item.allTime.total,
+                            units: Number(item.allTime.units),
+                            bankroll: item.allTime.bankroll ? Number(item.allTime.bankroll) : undefined,
+                        },
+                        today: {
+                            correct: item.today.correct,
+                            percentage: Number(item.today.percentage),
+                            total: item.today.total,
+                            units: Number(item.today.units),
+                            bankroll_change: item.today.bankroll_change ? Number(item.today.bankroll_change) : undefined,
+                        }
+                    }
+                })
+            }
+
         
             if (!queryType || queryType === RecordType.preds) {
                 return { preds: predRecords }
@@ -66,11 +90,15 @@ export class RecordController {
             else if (queryType === RecordType.all) {
                 return {
                     preds: predRecords,
-                    picks: picksRecords
+                    picks: picksRecords,
+                    evPicks: evPicksRecords
                 } 
             }
             else if (queryType === RecordType.value) {
                 return { picks: picksRecords }
+            }
+            else if (queryType === RecordType.ev) {
+                return { evPicks: evPicksRecords }
             }
         }
 
