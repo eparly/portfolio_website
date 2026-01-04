@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddRecipePage.css';
 import { useAuth } from 'react-oidc-context';
@@ -35,6 +36,17 @@ const AddRecipePage: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [tags, setTags] = useState<Tags[]>([]); // State for selected tags
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const redirectTimeout = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimeout.current) {
+        clearTimeout(redirectTimeout.current);
+      }
+    };
+  }, []);
   console.log('tags:', tags);
   console.log('availableTags:', availableTags);
   const handleIngredientChange = (index: number, value: string) => {
@@ -77,6 +89,8 @@ const AddRecipePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent duplicate submissions
+    setIsSubmitting(true);
 
     const recipe = {
       title,
@@ -130,9 +144,15 @@ const AddRecipePage: React.FC = () => {
       setLink('');
       setImage(null);
       setTags([]);
+      setIsSubmitting(false);
+      // Show success message briefly before redirecting
+      redirectTimeout.current = window.setTimeout(() => {
+        navigate('/recipes', { replace: true });
+      }, 800);
     } catch (error) {
       console.error('Error adding recipe:', error);
       setMessage('Failed to add recipe. Please try again.');
+      setIsSubmitting(false);
     }
   };
 
@@ -231,7 +251,7 @@ const AddRecipePage: React.FC = () => {
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </label>
 
-        <button type="submit">Submit Recipe</button>
+        <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit Recipe'}</button>
       </form>
       {message && <p className="message">{message}</p>}
     </div>
